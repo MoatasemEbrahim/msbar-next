@@ -25,7 +25,16 @@ const Home = () => {
   const [selectedBrand, setSelectedBrand] = useState<IBrand|null>(null);
   const [newBrand, setNewBrand] = useState<Omit<IBrand, 'id'>|null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSidebarPinned, setIsSidebarPinned] = useState<boolean>(!!window?.localStorage.getItem("pinnedSidebar"));
+  const [isSidebarPinned, setIsSidebarPinned] = useState<boolean>(false);
+
+  useEffect(() => {
+    const initialSidebarState = window.localStorage.getItem('pinnedSidebar')
+    if (initialSidebarState) {
+      setIsSidebarPinned(true)
+    } else {
+      setIsSidebarPinned(false)
+    }
+  },[isSidebarPinned])
 
   useEffect(() => {
     if (isSidebarPinned) {
@@ -143,7 +152,7 @@ const Home = () => {
               <h4 className='mt-2 mb-1 text-xl'>Update brand</h4>
               <BrandForm data={selectedBrand} onSubmit={updateBrandDetails} />
             </div>
-          ): <span className='p-2'>"No brand selected"</span>}
+          ): <span className='p-2'>No brand selected</span>}
         </HomeDrawer>
       </div>
       <Backdrop
